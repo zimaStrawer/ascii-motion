@@ -2,6 +2,8 @@
 
 An interactive, SVG-based character motion viewer. Four scenes are assembled from reusable glyph outlines and frame data rather than raster video.
 
+Live: https://ascii-motion.1318803172.workers.dev/
+
 ## Structure
 
 - `dist/index.html` — the complete interface
@@ -10,3 +12,5 @@ An interactive, SVG-based character motion viewer. Four scenes are assembled fro
 - `dist/assets/glyph-motion/*.json` — glyph atlases and frame data
 
 Serve `dist` with any static HTTP server. The animation plays once, can be scrubbed frame by frame, and respects reduced-motion preferences.
+
+Deploy with `npx wrangler deploy`.
