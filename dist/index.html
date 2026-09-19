@@ -19,6 +19,7 @@
     <div class="header-meta" aria-label="工程信息">
       <span>04 SCENES</span>
       <span>SVG RUNTIME</span>
+      <button class="principle-toggle" id="principle-toggle" type="button" aria-expanded="false" aria-controls="principle-panel">技术原理</button>
     </div>
   </header>
 
@@ -32,107 +33,101 @@
         <p class="intro-copy">字符不只是文本，也可以成为动作单元。选择一个场景，拖动时间轴，查看每个字形如何组合成完整姿态。</p>
       </div>
 
-      <div class="scene-tabs" role="tablist" aria-label="选择动画角色">
-        <button type="button" role="tab" aria-selected="true" data-scene="owl"><span>01</span>猫头鹰</button>
-        <button type="button" role="tab" aria-selected="false" data-scene="rabbit"><span>02</span>白兔</button>
-        <button type="button" role="tab" aria-selected="false" data-scene="spider"><span>03</span>蜘蛛</button>
-        <button type="button" role="tab" aria-selected="false" data-scene="frog"><span>04</span>青蛙</button>
-      </div>
+      <div class="workspace">
+        <div class="viewer-column">
+          <div class="scene-tabs" role="tablist" aria-label="选择动画角色">
+            <button type="button" role="tab" aria-selected="true" data-scene="owl"><span>01</span>猫头鹰</button>
+            <button type="button" role="tab" aria-selected="false" data-scene="rabbit"><span>02</span>白兔</button>
+            <button type="button" role="tab" aria-selected="false" data-scene="spider"><span>03</span>蜘蛛</button>
+            <button type="button" role="tab" aria-selected="false" data-scene="frog"><span>04</span>青蛙</button>
+          </div>
 
-      <section class="player" aria-labelledby="scene-title">
-        <header class="player-header">
-          <div>
-            <p id="scene-index">SCENE 01</p>
-            <h2 id="scene-title">猫头鹰与树枝</h2>
-          </div>
-          <div class="scene-stats" aria-label="当前场景数据">
-            <span><b id="glyph-count">—</b> GLYPHS</span>
-            <span><b id="fps-value">—</b> FPS</span>
-            <span><b id="frame-total">—</b> FRAMES</span>
-          </div>
-        </header>
+          <section class="player" aria-labelledby="scene-title">
+            <header class="player-header">
+              <div>
+                <p id="scene-index">SCENE 01</p>
+                <h2 id="scene-title">猫头鹰与树枝</h2>
+              </div>
+              <div class="scene-stats" aria-label="当前场景数据">
+                <span><b id="glyph-count">—</b> GLYPHS</span>
+                <span><b id="fps-value">—</b> FPS</span>
+                <span><b id="frame-total">—</b> FRAMES</span>
+              </div>
+            </header>
 
-        <div class="stage" id="stage" data-scene="owl">
-          <div class="stage-grid" aria-hidden="true"></div>
-          <svg id="motion-svg" role="img" aria-labelledby="scene-title scene-description" preserveAspectRatio="xMidYMid meet">
-            <desc id="scene-description">由独立字符轮廓组成的动态场景。</desc>
-            <defs id="glyph-defs"></defs>
-            <g id="glyph-art"></g>
-            <g id="glyph-guides" aria-hidden="true"></g>
-          </svg>
-          <div class="stage-status" aria-hidden="true">
-            <span id="scene-role">BLUE / ORANGE / GREEN</span>
-            <span id="motion-state">PLAYING</span>
-          </div>
+            <div class="stage show-guides" id="stage" data-scene="owl">
+              <div class="stage-grid" aria-hidden="true"></div>
+              <svg id="motion-svg" role="img" aria-labelledby="scene-title scene-description" preserveAspectRatio="xMidYMid meet">
+                <desc id="scene-description">由独立字符轮廓组成的动态场景。</desc>
+                <defs id="glyph-defs"></defs>
+                <g id="glyph-art"></g>
+                <g id="glyph-guides" aria-hidden="true"></g>
+              </svg>
+              <div class="stage-status" aria-hidden="true">
+                <span id="scene-role">BLUE / ORANGE / GREEN</span>
+                <span id="motion-state">PLAYING</span>
+              </div>
+            </div>
+
+            <div class="timeline">
+              <output id="current-time" for="progress">00.00</output>
+              <input id="progress" type="range" min="0" max="100" value="0" step="1" aria-label="动画进度">
+              <output id="duration" for="progress">00.00</output>
+            </div>
+
+            <div class="controls">
+              <div class="transport" aria-label="播放控制">
+                <button class="primary-control" id="play" type="button" aria-label="暂停动画">
+                  <span id="play-icon" aria-hidden="true">Ⅱ</span><span id="play-label">暂停</span>
+                </button>
+                <button class="icon-control" id="restart" type="button" aria-label="从头播放" title="从头播放">↺</button>
+                <span class="control-divider" aria-hidden="true"></span>
+                <button class="icon-control" id="previous" type="button" aria-label="上一帧" title="上一帧">‹</button>
+                <output class="frame-readout" id="frame-readout">001 / 001</output>
+                <button class="icon-control" id="next" type="button" aria-label="下一帧" title="下一帧">›</button>
+              </div>
+              <button class="guide-toggle" id="guide-toggle" type="button" aria-pressed="true">
+                <span class="guide-icon" aria-hidden="true"></span>
+                <span>隐藏字符框</span>
+              </button>
+            </div>
+          </section>
         </div>
 
-        <div class="timeline">
-          <output id="current-time" for="progress">00.00</output>
-          <input id="progress" type="range" min="0" max="100" value="0" step="1" aria-label="动画进度">
-          <output id="duration" for="progress">00.00</output>
-        </div>
-
-        <div class="controls">
-          <div class="transport" aria-label="播放控制">
-            <button class="primary-control" id="play" type="button" aria-label="暂停动画">
-              <span id="play-icon" aria-hidden="true">Ⅱ</span><span id="play-label">暂停</span>
-            </button>
-            <button class="icon-control" id="restart" type="button" aria-label="从头播放" title="从头播放">↺</button>
-            <span class="control-divider" aria-hidden="true"></span>
-            <button class="icon-control" id="previous" type="button" aria-label="上一帧" title="上一帧">‹</button>
-            <output class="frame-readout" id="frame-readout">001 / 001</output>
-            <button class="icon-control" id="next" type="button" aria-label="下一帧" title="下一帧">›</button>
+        <aside class="principle" id="principle-panel" aria-labelledby="principle-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TECHNICAL PRINCIPLE</p>
+              <h2 id="principle-title">字符如何成为动画</h2>
+            </div>
+            <button class="principle-close" id="principle-close" type="button" aria-label="关闭技术原理">×</button>
           </div>
-          <button class="guide-toggle" id="guide-toggle" type="button" aria-pressed="false">
-            <span class="guide-icon" aria-hidden="true"></span>
-            <span>显示字符框</span>
-          </button>
-        </div>
-      </section>
-    </section>
-
-    <section class="principle" aria-labelledby="principle-title">
-      <div class="section-heading">
-        <p class="eyebrow">TECHNICAL PRINCIPLE</p>
-        <h2 id="principle-title">字符如何成为动画</h2>
-      </div>
-      <div class="pipeline" aria-label="字符动画渲染流程">
-        <article>
-          <span>01</span>
-          <h3>字形轮廓</h3>
-          <p>每个字符被保存为可复用的 SVG Path。画面放大后仍然清晰，也可以独立着色。</p>
-          <code>glyph → path</code>
-        </article>
-        <article>
-          <span>02</span>
-          <h3>帧数据</h3>
-          <p>每一帧只记录字符索引、位置、宽高、颜色和语义角色，不储存整张图片。</p>
-          <code>{ g, x, y, w, h }</code>
-        </article>
-        <article>
-          <span>03</span>
-          <h3>运行时组合</h3>
-          <p>浏览器通过 SVG <code>&lt;use&gt;</code> 复用轮廓，并使用位移和缩放把字符组装成姿态。</p>
-          <code>translate + scale</code>
-        </article>
-        <article>
-          <span>04</span>
-          <h3>时间映射</h3>
-          <p>播放时钟按 FPS 映射到帧序号；拖动进度条则直接读取指定帧，因此可以逐帧检查。</p>
-          <code>time × fps → frame</code>
-        </article>
-      </div>
-      <div class="system-note">
-        <p>它不是视频，也不是逐帧导出的图片。画面中的括号、箭头、斜线和标点都是独立矢量字符。</p>
-        <p>开启“显示字符框”后，可以看到每个字符在当前帧中的真实占位范围。</p>
+          <div class="pipeline" aria-label="字符动画渲染流程">
+            <article>
+              <span>01</span>
+              <div><h3>字形轮廓</h3><p>字符保存为可复用的 SVG Path，可独立着色并保持清晰。</p><code>glyph → path</code></div>
+            </article>
+            <article>
+              <span>02</span>
+              <div><h3>帧数据</h3><p>每帧只记录字形、位置、宽高和颜色，而不是整张图片。</p><code>{ g, x, y, w, h }</code></div>
+            </article>
+            <article>
+              <span>03</span>
+              <div><h3>运行时组合</h3><p>通过 SVG <code>&lt;use&gt;</code>、位移和缩放组合出姿态。</p><code>translate + scale</code></div>
+            </article>
+            <article>
+              <span>04</span>
+              <div><h3>时间映射</h3><p>播放时钟映射到帧序号，进度条则直接读取指定帧。</p><code>time × fps → frame</code></div>
+            </article>
+          </div>
+          <div class="system-note">
+            <p>画面不是视频或逐帧图片。每个括号、箭头、斜线与标点都是独立的矢量字形。</p>
+            <p>字符框左上角显示该对象当前使用的真实字符。</p>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
-
-  <footer>
-    <span>ASCII Motion</span>
-    <span>Glyph outlines · Frame data · SVG composition</span>
-  </footer>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

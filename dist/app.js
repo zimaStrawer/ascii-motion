@@ -11,7 +11,7 @@ const defs = document.querySelector('#glyph-defs');
 const art = document.querySelector('#glyph-art');
 const guides = document.querySelector('#glyph-guides');
 const tabs = [...document.querySelectorAll('[data-scene]')];
-const ui = Object.fromEntries(['scene-index','scene-title','scene-description','scene-role','motion-state','glyph-count','fps-value','frame-total','current-time','duration','progress','play','play-icon','play-label','restart','previous','next','frame-readout','guide-toggle'].map(id => [id, document.getElementById(id)]));
+const ui = Object.fromEntries(['scene-index','scene-title','scene-description','scene-role','motion-state','glyph-count','fps-value','frame-total','current-time','duration','progress','play','play-icon','play-label','restart','previous','next','frame-readout','guide-toggle','principle-toggle','principle-close'].map(id => [id, document.getElementById(id)]));
 const cache = new Map();
 let sceneName = 'owl';
 let scene = null;
@@ -30,6 +30,13 @@ function svgElement(tag, attrs = {}, parent) {
 
 function formatTime(value) {
   return value.toFixed(2).padStart(5, '0');
+}
+
+function displayGlyphChar(value = '') {
+  if (value === 'accent') return 'ˆ';
+  if (value === 'featherL') return '/';
+  if (value === 'featherR') return '\\';
+  return value;
 }
 
 async function getScene(name) {
@@ -54,6 +61,7 @@ function render(nextFrame) {
   const guideFragment = document.createDocumentFragment();
   for (const part of parts) {
     const [x, y, w, h] = part.b;
+    const glyph = scene.glyphs[part.g];
     svgElement('use', {
       href: `#glyph-${sceneName}-${part.g}`,
       fill: part.c,
@@ -61,6 +69,9 @@ function render(nextFrame) {
     }, fragment);
     svgElement('rect', { class: 'glyph-guide', x, y, width: w, height: h }, guideFragment);
     svgElement('circle', { class: 'glyph-origin', cx: x, cy: y, r: 2.3 }, guideFragment);
+    const labelY = y - 5 < scene.viewBox[1] + 7 ? y + 9 : y - 5;
+    const label = svgElement('text', { class: 'glyph-label', x: x + 1, y: labelY }, guideFragment);
+    label.textContent = displayGlyphChar(glyph?.char);
   }
   art.replaceChildren(fragment);
   guides.replaceChildren(guideFragment);
@@ -134,7 +145,23 @@ ui['guide-toggle'].addEventListener('click', () => {
   document.querySelector('#stage').classList.toggle('show-guides', active);
 });
 
+const principlePanel = document.querySelector('#principle-panel');
+function setPrincipleOpen(active) {
+  principlePanel.classList.toggle('is-open', active);
+  ui['principle-toggle'].setAttribute('aria-expanded', String(active));
+}
+ui['principle-toggle'].addEventListener('click', () => setPrincipleOpen(!principlePanel.classList.contains('is-open')));
+ui['principle-close'].addEventListener('click', () => {
+  setPrincipleOpen(false);
+  ui['principle-toggle'].focus();
+});
+
 document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && principlePanel.classList.contains('is-open')) {
+    setPrincipleOpen(false);
+    ui['principle-toggle'].focus();
+    return;
+  }
   if (event.target.closest('button,input,a')) return;
   if (event.code === 'Space') { event.preventDefault(); ui.play.click(); }
   if (event.code === 'ArrowLeft') { event.preventDefault(); seek(frame - 1); }
