@@ -1,9 +1,9 @@
 const NS = 'http://www.w3.org/2000/svg';
 const scenes = {
   owl: { file: './assets/glyph-motion/owl.json', index: '01', title: '猫头鹰与树枝', palette: 'BLUE / ORANGE / GREEN', accent: '#247df0', description: '字符猫头鹰降落并收拢翅膀，停在由标点和括号组成的树枝上。' },
-  rabbit: { file: './assets/glyph-motion/rabbit.json', index: '02', title: '白兔、胡萝卜与草', palette: 'WHITE / GREEN / ORANGE', accent: '#f3f3ef', description: '白兔完成耳朵变化和姿态过渡，周围的胡萝卜与草逐步生长。' },
+  rabbit: { file: './assets/glyph-motion/rabbit.json', index: '02', title: '白兔、胡萝卜与草', palette: 'WHITE / GREEN / ORANGE', accent: '#f3f3ef', viewBox: [105, 90, 720, 490], description: '白兔完成耳朵变化和姿态过渡，周围的胡萝卜与草逐步生长。' },
   spider: { file: './assets/glyph-motion/spider.json', index: '03', title: '蜘蛛下行', palette: 'ORANGE / WHITE', accent: '#ff6900', description: '蜘蛛由字符片段组成，并沿垂直方向完成一次下行动作。' },
-  frog: { file: './assets/glyph-motion/frog.json', index: '04', title: '青蛙弹跳与捕虫', palette: 'GREEN / BLUE / ORANGE', accent: '#46c324', description: '青蛙先压缩蓄力，再弹跳、落地并吐舌捕捉飞虫。' }
+  frog: { file: './assets/glyph-motion/frog.json', index: '04', title: '青蛙弹跳与捕虫', palette: 'GREEN / BLUE / ORANGE', accent: '#46c324', viewBox: [45, 520, 1000, 830], description: '青蛙先压缩蓄力，再弹跳、落地并吐舌捕捉飞虫。' }
 };
 
 const svg = document.querySelector('#motion-svg');
@@ -113,7 +113,7 @@ async function selectScene(name, autoplay = true) {
   document.documentElement.style.setProperty('--accent', config.accent);
   document.documentElement.style.setProperty('--stage-ratio', `${scene.viewBox[2]} / ${scene.viewBox[3]}`);
   document.querySelector('#stage').dataset.scene = name;
-  svg.setAttribute('viewBox', scene.viewBox.join(' '));
+  svg.setAttribute('viewBox', (config.viewBox || scene.viewBox).join(' '));
   ui['scene-index'].textContent = `SCENE ${config.index}`;
   ui['scene-title'].textContent = config.title;
   ui['scene-description'].textContent = config.description;
