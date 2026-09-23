@@ -86,7 +86,7 @@ input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 0; bo
 #glyph-guides { display: none; pointer-events: none; }
 .show-guides #glyph-guides { display: block; }
 .glyph-guide { fill: none; stroke: #e2e8ed; stroke-width: .65; stroke-dasharray: 2 2; opacity: .42; vector-effect: non-scaling-stroke; }
-.glyph-label { fill: var(--accent); font: 600 12px/1 "SFMono-Regular", Consolas, "PingFang SC", monospace; paint-order: stroke; stroke: #090909; stroke-width: 2.5px; stroke-linejoin: round; }
+.glyph-label { font: 600 12px/1 "SFMono-Regular", Consolas, "PingFang SC", monospace; paint-order: stroke; stroke: #090909; stroke-width: 2.5px; stroke-linejoin: round; }
 
 .principle { min-height: 0; padding: 16px; display: grid; grid-template-rows: auto minmax(0,1fr) auto; border: 1px solid var(--line); background: var(--panel); overflow: hidden; }
 .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }

@@ -69,7 +69,7 @@ function render(nextFrame) {
     }, fragment);
     svgElement('rect', { class: 'glyph-guide', x, y, width: w, height: h }, guideFragment);
     const label = svgElement('text', {
-      class: 'glyph-label', x, y,
+      class: 'glyph-label', x, y, fill: part.c,
       'text-anchor': 'middle', 'dominant-baseline': 'central'
     }, guideFragment);
     label.textContent = displayGlyphChar(glyph?.char);
