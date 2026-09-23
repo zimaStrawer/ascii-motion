@@ -68,9 +68,10 @@ function render(nextFrame) {
       transform: `translate(${x} ${y}) scale(${w / 1000} ${h / 1000})`
     }, fragment);
     svgElement('rect', { class: 'glyph-guide', x, y, width: w, height: h }, guideFragment);
-    svgElement('circle', { class: 'glyph-origin', cx: x, cy: y, r: 2.3 }, guideFragment);
-    const labelY = y - 5 < scene.viewBox[1] + 7 ? y + 9 : y - 5;
-    const label = svgElement('text', { class: 'glyph-label', x: x + 1, y: labelY }, guideFragment);
+    const label = svgElement('text', {
+      class: 'glyph-label', x, y,
+      'text-anchor': 'middle', 'dominant-baseline': 'central'
+    }, guideFragment);
     label.textContent = displayGlyphChar(glyph?.char);
   }
   art.replaceChildren(fragment);
